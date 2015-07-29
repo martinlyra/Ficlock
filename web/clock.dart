@@ -47,12 +47,12 @@ class Date extends Object {
   }
   
   dynamic millisecondsSinceYearZero() {
-    var msiy = (this.year * daysperyear * 24 * 60 * 60 * 1000);
-    var msim = (this.month * dayspermonth * 24 * 60 * 60 * 1000);
-    var msid = (this.day * 24 * 60 * 60 * 1000);
-    var msih = (this.hour * 60 * 60 * 1000);
-    var msimin = (this.minute * 60 * 1000);
-    var msis = (this.second * 1000);
+    var msiy = (this.year * daysperyear * hoursperday * minutesperhour * secondsperminute * millisecondspersecond);
+    var msim = (this.month * dayspermonth * hoursperday * minutesperhour * secondsperminute * millisecondspersecond);
+    var msid = (this.day * hoursperday * minutesperhour * secondsperminute * millisecondspersecond);
+    var msih = (this.hour * minutesperhour * secondsperminute * millisecondspersecond);
+    var msimin = (this.minute * secondsperminute * millisecondspersecond);
+    var msis = (this.second * millisecondspersecond);
     
     return msiy + msim + msid + msih + msimin + msis + this.second;
   }
