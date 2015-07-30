@@ -6,21 +6,16 @@ import 'dart:core';
 import 'dart:html';
 
 import 'ficalendars.dart';
+import 'clock.dart';
 
 const oneMilliSec = const Duration(milliseconds:1);
 const oneSec = const Duration(seconds:1);
-
-const difference = 25071120000000;
-const teksdiff   = 16443734400000;
-const aaa        = 10101781272.259614944458;
-const ficyear = 365.25/52;
 
 const factor = 1.394540942928;
 
 var ticker;
 var lastDate;
 
-var fictime;
 var calendars;
 
 void main() {
@@ -31,21 +26,8 @@ void main() {
 
 void init() {
   
-  fictime = new DateTime.now().add(new Duration(milliseconds:millisecondsSinceYearZero() - (millisecondsSinceYearZero() - new DateTime.now().millisecondsSinceEpoch)));
-  
   ticker = new Timer.periodic(oneMilliSec, (Timer t) => update(t));
   
-}
-
-dynamic millisecondsSinceYearZero() {
-  var msiy = (new DateTime.now().year * 365.242199 * 24 * 60 * 60 * 1000);
-  var msim = (new DateTime.now().month * (365.242199/12) * 24 * 60 * 60 * 1000);
-  var msid = (new DateTime.now().day * 24 * 60 * 60 * 1000);
-  var msih = (new DateTime.now().hour * 60 * 60 * 1000);
-  var msimin = (new DateTime.now().minute * 60 * 1000);
-  var msis = (new DateTime.now().second * 1000);
-  
-  return msiy + msim + msid + msih + msimin + msis + new DateTime.now().millisecond;
 }
 
 dynamic millisecondsSinceEpoch() {
@@ -72,11 +54,11 @@ dynamic millisecondsSinceThisYear() {
 
 void update(Timer timer) {
   DateTime now = new DateTime.now();
+  Date d = new Date.now();
+  DateTime ficd = new DateTime.fromMillisecondsSinceEpoch(d.millisecondsSinceYearZero() * 1.394540942928);
+  ficd = ficd.subtract(new Duration(days:(1970*365.25)));
   
-  fictime = fictime.add(new Duration(milliseconds:(1000/7)));
-  
-  querySelector('#debug').text = "${millisecondsSinceYearZero()}<br>${millisecondsSinceThisYear()}<br>${new DateTime.now().millisecondsSinceEpoch}";
-  querySelector("#fictionverse").querySelector(".time").text = "$fictime";
+  querySelector("#fictionverse").querySelector(".time").text = "$ficd";
   
   updateRealTime(now);
   if (!isToday(now))
