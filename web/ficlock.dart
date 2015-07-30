@@ -8,17 +8,33 @@ import 'dart:html';
 import 'ficalendars.dart';
 import 'clock.dart';
 
-const oneMilliSec = const Duration(milliseconds:1);
-const oneSec = const Duration(seconds:1);
+const oneMillisec = const Duration(milliseconds:1);   // Standard
+const tenMillisec = const Duration(milliseconds:10);  // Just in-case someone complains about 'flickering' or problems caused by above constant
+const oneSec = const Duration(seconds:1);             // For browsers and computers with slow JS-processing speed
 
+final daterelationfactor = calculatefactor();
+const spfactor = 7.024038461538462;
 const factor = 1.394540942928;
+const initaloffsetyear = 1;
+
 
 var ticker;
 var lastDate;
 
 var calendars;
 
+Calendar cyra;
+
+num calculatefactor() {
+  var v1 = new Duration(days: (2015 - initaloffsetyear)*365.25);
+  var v2 = new Duration(days: (2806 - initaloffsetyear)*365.25 + 31);
+  
+  return v2.inMilliseconds/v1.inMilliseconds;
+}
+
 void main() {
+  
+  print(calculatefactor());
   
   init();
   
@@ -26,11 +42,14 @@ void main() {
 
 void init() {
   
-  ticker = new Timer.periodic(oneMilliSec, (Timer t) => update(t));
+  cyra = new Cyrannian();
+  
+  ticker = new Timer.periodic(oneMillisec, (Timer t) => update(t));
   
 }
 
-dynamic millisecondsSinceEpoch() {
+// To be removed 
+/* dynamic millisecondsSinceEpoch() {
   var msiy = (new DateTime(1970).year * 365.242199 * 24 * 60 * 60 * 1000);
   var msim = (new DateTime(1970).month * (365.242199/12) * 24 * 60 * 60 * 1000);
   var msid = (new DateTime(1970).day * 24 * 60 * 60 * 1000);
@@ -50,15 +69,18 @@ dynamic millisecondsSinceThisYear() {
   //var msis = (new DateTime(2015).second * 1000);
   
   return msiy; //new DateTime(2015).millisecond;
-}
+} */
 
 void update(Timer timer) {
   DateTime now = new DateTime.now();
   Date d = new Date.now();
-  DateTime ficd = new DateTime.fromMillisecondsSinceEpoch(d.millisecondsSinceYearZero() * 1.394540942928);
+  DateTime ficd = new DateTime.fromMillisecondsSinceEpoch(d.millisecondsSinceYearOne() * calculatefactor());
   ficd = ficd.subtract(new Duration(days:(1970*365.25)));
   
-  querySelector("#fictionverse").querySelector(".time").text = "$ficd";
+  cyra.update(ficd);
+  
+  querySelector("#cyrannian").querySelector(".time").text = "${cyra.toString()}";
+  querySelector("#fictionverse").querySelector(".time").text = "${ficd.year}-${ficd.month}-${ficd.day}";
   
   updateRealTime(now);
   if (!isToday(now))

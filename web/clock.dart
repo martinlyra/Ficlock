@@ -86,12 +86,12 @@ class Date extends Object {
       second: time.second,
       millisecond: time.millisecond);
   
-  static Date fromYearZero (num millisecondssinceyearzero) {    
+  static Date fromYearOne (num millisecondssinceyearzero) {    
     return new Date.now().add(new Duration(milliseconds: millisecondssinceyearzero));
   }
   
-  int millisecondsSinceYearZero() {
-    var msiy = (this.year * daysperyear * hoursperday * minutesperhour * secondsperminute * millisecondspersecond);
+  int millisecondsSinceYearOne() {
+    var msiy = ((this.year - 1) * daysperyear * hoursperday * minutesperhour * secondsperminute * millisecondspersecond);
     var msim = (this.month * dayspermonth * hoursperday * minutesperhour * secondsperminute * millisecondspersecond);
     var msid = (this.day * hoursperday * minutesperhour * secondsperminute * millisecondspersecond);
     var msih = (this.hour * minutesperhour * secondsperminute * millisecondspersecond);
