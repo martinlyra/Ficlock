@@ -35,15 +35,15 @@ class Cyrannian implements Calendar {
   var year;
   var month;
   String monthname;
+  String period;
   
   Cyrannian() {
     this.monthsperyear = 6;
   }
   
   void update(DateTime time) {
-    var year = time.year;
     this.month = (time.month/2).floor();
-    
+    _calculateYear(time.year);
     switch (this.month) {
       case 1: 
         this.monthname = ("Ianuaria");
@@ -66,8 +66,19 @@ class Cyrannian implements Calendar {
       }
   }
   
+  void _calculateYear(var rawyear) {
+    if (rawyear < 2797) {
+      this.year = (2797-rawyear);
+      this.period = "B";
+    }
+    else {
+      this.year = (rawyear-2797);
+      this.period = "";
+    }
+  }
+  
   String toString() {
-    return "${this.monthname} ${year}";
+    return "${this.monthname} ${this.year} ${this.period}NE";
   }
 }
 
