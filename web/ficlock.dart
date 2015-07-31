@@ -17,6 +17,8 @@ const spfactor = 7.024038461538462;
 const factor = 1.394540942928;
 const initaloffsetyear = 1;
 
+final double epochindays = 1970*365.25;
+final epochfactor = new Duration(days:epochindays.roundToDouble().floor());
 
 var ticker;
 var lastDate;
@@ -24,6 +26,10 @@ var lastDate;
 var calendars;
 
 Calendar cyra;
+Calendar drac;
+Calendar ramb;
+Calendar buns;
+Calendar fare;
 
 num calculatefactor() {
   var v1 = new Duration(days: (2015 - initaloffsetyear)*365.25);
@@ -34,6 +40,10 @@ num calculatefactor() {
 
 void main() {
   
+  for (int i = 1; i <= 12; i++) {
+    print("$i ${(i/2).ceilToDouble().floor()}");
+  }
+  
   print(calculatefactor());
   
   init();
@@ -43,6 +53,10 @@ void main() {
 void init() {
   
   cyra = new Cyrannian();
+  drac = new Draconid();
+  ramb = new Rambian();
+  buns = new Bunsen();
+  fare = new Farengeto();
   
   ticker = new Timer.periodic(oneMillisec, (Timer t) => update(t));
   
@@ -75,11 +89,19 @@ void update(Timer timer) {
   DateTime now = new DateTime.now();
   Date d = new Date.now();
   DateTime ficd = new DateTime.fromMillisecondsSinceEpoch(d.millisecondsSinceYearOne() * calculatefactor());
-  ficd = ficd.subtract(new Duration(days:(1970*365.25)));
+  ficd = ficd.subtract(epochfactor);
   
   cyra.update(ficd);
+  drac.update(ficd);
+  ramb.update(ficd);
+  buns.update(ficd);
+  fare.update(ficd);
   
   querySelector("#cyrannian").querySelector(".time").text = "${cyra.toString()}";
+  querySelector("#draconid").querySelector(".time").text = "${drac.toString()}";
+  querySelector("#rambo").querySelector(".time").text = "${ramb.toString()}";
+  querySelector("#bunsen").querySelector(".time").text = "${buns.toString()}";
+  querySelector("#farengeto").querySelector(".time").text = "${fare.toString()}";
   querySelector("#fictionverse").querySelector(".time").text = "${ficd.year}-${ficd.month}-${ficd.day}";
   
   updateRealTime(now);
