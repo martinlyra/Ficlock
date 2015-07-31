@@ -255,7 +255,7 @@ class Farengeto implements Calendar {
   }
   
   String toString() {
-    return "${this.year.toRadixString(BASE)}.{${this.month.toRadixString(BASE)}.{${this.day.toRadixString(BASE)}";
+    return "${this.year.toRadixString(BASE)}.${this.month.toRadixString(BASE)}.${this.day.toRadixString(BASE)}";
     // return "${this.year.toRadixString(BASE)}.${this.month.toRadixString(BASE)}.${this.day.toRadixString(BASE)}.${this.hour.toRadixString(BASE)}=${this.minute.toRadixString(BASE)}-${this.second.toRadixString(BASE)}";
   }
 }
